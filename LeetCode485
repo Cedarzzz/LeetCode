@@ -1,0 +1,21 @@
+public class leetcode485 {
+    public static void main(String[] args) {
+        int[] nums = {1,1,1,1,1,1,0,1};
+        int count = nums[0] == 1?1 :0;
+        int result = count;
+
+        for(int i =1;i<nums.length;i++)
+        {
+            if(nums[i]==1)
+            {
+                count++;
+            }
+            else{
+
+                count = 0;
+            }
+            result = Math.max(result, count);
+        }
+
+    }
+}
