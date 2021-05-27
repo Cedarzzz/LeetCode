@@ -1,5 +1,5 @@
 public ListNode removeElements(ListNode head, int val) {
-        //哨兵节点
+        //哨兵节点。其主要目的是使链表标准化，如使链表永不为空、永不无头、简化插入和删除。
         ListNode dummy =  new ListNode(0);
         dummy.next = head;
         ListNode previous = dummy;
