@@ -1,0 +1,19 @@
+public ListNode removeElements(ListNode head, int val) {
+        //哨兵节点
+        ListNode dummy =  new ListNode(0);
+        dummy.next = head;
+        ListNode previous = dummy;
+        while(head != null)
+        {
+            if(head.val==val)
+            {
+                previous.next = head.next;              
+            }
+            else
+            {
+                previous = head;     
+            }  
+            head = head.next;
+        }
+        return dummy.next;
+    }
