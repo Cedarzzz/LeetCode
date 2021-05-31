@@ -1,0 +1,39 @@
+题目：给定两个字符串 s 和 t，它们只包含小写字母。
+字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。
+请找出在 t 中被添加的字母。
+示例 1：
+输入：s = "abcd", t = "abcde"
+输出："e"
+解释：'e' 是那个被添加的字母。
+方法：将t放入哈希表，再用s遍历一次，遇到相同的删除键值。最后则只剩下添加的一个字母。
+class Solution {
+    public char findTheDifference(String s, String t) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        char result = 0;
+        for (char s1 : t.toCharArray()) {
+            if (map.containsKey(s1) == false)
+                map.put(s1, 1);
+            else {
+                int temp = map.get(s1);
+                map.put(s1, temp + 1);
+            }
+        }
+        for (char s1 : s.toCharArray()) {
+            if (map.containsKey(s1) == false) {
+                //return s1; //LeetCode返回
+            } else {
+                int temp = map.get(s1);
+                if (temp == 1) {
+                    map.remove(s1);
+                }
+                else {
+                    map.put(s1, temp - 1);
+                }
+            }
+        }
+        for(char k:map.keySet()){
+            result = k;
+        }
+        return result;
+    }
+}
