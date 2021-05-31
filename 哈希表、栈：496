@@ -1,0 +1,103 @@
+题目：给你两个 没有重复元素 的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。
+请你找出 nums1 中每个元素在 nums2 中的下一个比其大的值。
+nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出 -1 。
+
+栈+哈希表法：用单调栈求每个元素的第一个大值。递减栈，则下一个比栈顶大的值也是栈中所有元素的第一个大值。
+将每个元素的第一个大值放在哈希表中，key是元素，value是最大值。再用nums1遍历哈希表，取出每个元素对应的大值。
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> stack = new Stack<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int[] res = new int[nums1.length];
+        for (int num : nums2) {
+            while (stack.size() != 0 && num > stack.peek()) {
+                int temp = stack.pop();
+                map.put(temp, num);
+            }
+            stack.add(num);
+        }
+        while (stack.size() != 0) {
+            int temp = stack.pop();
+            map.put(temp, -1);
+        }
+        for (int i = 0; i < nums1.length; i++) {
+            res[i] = map.get(nums1[i]);
+        }
+        return res;
+    }
+}
+暴力解法：
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int[] res = new int[len1];
+        if(len1 < 0)
+        {
+            return res;
+        }
+        for(int i = 0;i<len1;i++)
+        {
+            int curVal = nums1[i];
+            int j =0;
+            while(j < len2 && nums2[j] != curVal)
+            {
+                j++;
+            }
+            j++;
+            while(j < len2 && nums2[j] < curVal)
+            {
+                j++;
+            }
+            if(j == len2)
+            {
+                res[i] = -1;
+                continue;
+            }
+            res[i] = nums2[j];
+        }
+        return res;
+    }
+}
+栈方法：
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> temp = new Stack<>();
+        int top = 0;
+        boolean isFound = false;
+        int max = -1;
+        int[] res = new int[nums1.length];
+
+        for(int i = 0; i<nums2.length;i++)
+        {
+            stack.push(nums2[i]);
+        }
+        for(int i = 0; i < nums1.length; i++)
+        {
+            isFound = false;
+            max = -1;
+            while(stack.size() != 0 && isFound != true)
+            {
+                top = stack.pop();
+                if(top == nums1[i])
+                {
+                    isFound = true;
+                }
+                if(top > nums1[i])
+                {
+                    max = top;
+                }
+                temp.push(top);
+            }
+            while(temp.size() != 0)
+            {
+                top = temp.pop();
+                stack.push(top);
+            }
+            res[i] = max;
+        }
+        return res;
+    }
+}
+
